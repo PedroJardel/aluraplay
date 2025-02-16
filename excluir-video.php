@@ -15,7 +15,7 @@ if(in_array($id, [false, null], true)) {
 }
 $result = $videoRepository->remove($id);
 
-if ($result === false) {
+if (!$result) {
     session_start();
     $_SESSION['message'] = "Falha ao excluir vídeo.";
     header("Location: /?success=0");

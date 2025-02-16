@@ -21,10 +21,12 @@ class VideoRepository
         $statement = $this->connection->query($sqlQuery);
         $videos = $statement->fetchAll();
 
-        return $this->objectFormat($videos);
+        return array_map(
+            $this->hydratateVideo(...),
+            $videos);
     }
 
-    public function getById(int $id): array
+    public function getById(int $id): Video
     {
         $sql = "SELECT * FROM videos WHERE id = :id;";
         $statement = $this->connection->prepare($sql);
@@ -32,7 +34,7 @@ class VideoRepository
         $statement->execute();
         $video = $statement->fetch();
 
-        return $video;
+        return $this->hydratateVideo($video);
     }
 
     public function add(Video $video): bool
@@ -70,22 +72,13 @@ class VideoRepository
         return $statement->execute();
     }
 
-    /**
-     * Summary of objectFormat
-     * @param array $data
-     * @return Video[]
-     */
-    public function objectFormat(array $data): array
+    private function hydratateVideo(array $dataVideo): Video
     {
-        $videoList = array_map(function ($object): Video {
-            $video = new Video (
-                $object["url"],
-                $object["title"],
-            );
-            $video->setId($object["id"]);
-            return $video;
-        }, $data);
-
-        return $videoList;
+        $video = new Video (
+            $dataVideo["url"],
+            $dataVideo["title"],
+        );
+        $video->setId($dataVideo["id"]);
+        return $video;
     }
 }

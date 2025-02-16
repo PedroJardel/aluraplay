@@ -24,7 +24,7 @@ $video = new Video (
 $videoRepository = new VideoRepository($connection);
 $result = $videoRepository->add($video);
 
-if ($result === false) {
+if (!$result) {
     session_start();
     $_SESSION['message'] = "Falha ao adicionar vídeo.";
     header("Location: /?success=0");

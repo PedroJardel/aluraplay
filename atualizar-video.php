@@ -27,7 +27,7 @@ $video->setId($id);
 $videoRepository = new VideoRepository($connection);
 $result = $videoRepository->update($video);
 
-if ($result === false) {
+if (!$result) {
     session_start();
     $_SESSION['message'] = "Falha ao atualizar vídeo.";
     header("Location: /?success=0");
