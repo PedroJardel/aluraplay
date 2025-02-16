@@ -10,8 +10,8 @@ class VideoListController implements ControllerInterface
     public function __construct(private VideoRepository $videoRepository) {}
     public function requestProcess(): void
     {
-        session_start();
-        if (isset($_SESSION['message'])) {
+
+        if (array_key_exists('message', $_SESSION)) {
             echo "<script>
             alert('{$_SESSION['message']}');
              window.location.href = '/';

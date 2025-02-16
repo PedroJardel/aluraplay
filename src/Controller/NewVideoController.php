@@ -31,11 +31,9 @@ class NewVideoController implements ControllerInterface
         $result = $this->videoRepository->add($video);
 
         if (!$result) {
-            session_start();
             $_SESSION['message'] = "Falha ao adicionar vídeo.";
             header("Location: /?success=0");
         } else {
-            session_start();
             $_SESSION['message'] = "Vídeo adicionado com sucesso.";
             header("Location: /?success=1");
         } 

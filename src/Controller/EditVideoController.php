@@ -16,9 +16,8 @@ class EditVideoController implements ControllerInterface
         $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
         
         $data = [$id, $url, $title ];
-        
+
         if (count(array_intersect($data, [false, true])) > 0) {
-            session_start();
             $_SESSION['message'] = "Dados incorretos ou inexistentes";
             header("Location: /?success=0");
             exit();
@@ -33,11 +32,9 @@ class EditVideoController implements ControllerInterface
         $result = $this->videoRepository->update($video);
         
         if (!$result) {
-            session_start();
             $_SESSION['message'] = "Falha ao atualizar vídeo.";
             header("Location: /?success=0");
         } else {
-            session_start();
             $_SESSION['message'] = "Vídeo atualizado com sucesso.";
             header("Location: /?success=1");
         }

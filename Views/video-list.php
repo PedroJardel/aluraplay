@@ -1,5 +1,9 @@
 <?php
-require_once __DIR__ . "/Base/inicio-html.php"; 
+
+use alura\mvc\Models\Video;
+
+require_once __DIR__ . "/Base/inicio-html.php";
+/** @var Video[] $videosList*/
 ?>
 <ul class="videos__container" alt="videos alura">
     <?php foreach ($videosList as $video): ?>
