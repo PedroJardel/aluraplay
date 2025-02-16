@@ -1,5 +1,9 @@
 <?php
+
+use alura\mvc\Models\Video;
+
 require_once __DIR__ . "/Base/inicio-html.php";
+/** @var Video|null $video */
 ?>
 <main class="container">
     <form class="container__formulario"

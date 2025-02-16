@@ -13,7 +13,7 @@ require_once __DIR__ . "/Base/inicio-html.php";
                 <img src="./img/logo.png" alt="logo canal alura">
                 <h3><?= $video->title ?></h3>
                 <div class="acoes-video">
-                    <a href="/novo-video?id=<?= $video->id ?>">Editar</a>
+                    <a href="/atualizar-video?id=<?= $video->id ?>">Editar</a>
                     <a href="/excluir-video?id=<?= $video->id ?>">Excluir</a>
                 </div>
             </div>
