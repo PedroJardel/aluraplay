@@ -6,6 +6,7 @@ use alura\mvc\Controller\LoginController;
 use alura\mvc\Controller\LoginFormController;
 use alura\mvc\Controller\LogoutController;
 use alura\mvc\Controller\NewVideoController;
+use alura\mvc\Controller\RemoveThumbController;
 use alura\mvc\Controller\VideoFormController;
 use alura\mvc\Controller\VideoListController;
 
@@ -19,4 +20,5 @@ return [
      'GET|/login' => LoginFormController::class,
      'POST|/login' => LoginController::class,
      'GET|/logout' => LogoutController::class,
+     'GET|/remover-capa' => RemoveThumbController::class,
 ];

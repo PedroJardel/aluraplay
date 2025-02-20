@@ -37,7 +37,7 @@ class EditVideoController implements ControllerInterface
             $video->setFilePath($fileName);
         }
         $video->setId($id);
-        
+
         $result = $this->videoRepository->update($video);
         
         if (!$result) {
