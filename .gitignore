@@ -1,3 +1,4 @@
 database.sqlite
 vendor/
 create-user.php
+public/img/uploads

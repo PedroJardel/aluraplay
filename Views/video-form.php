@@ -7,7 +7,9 @@ require_once __DIR__ . "/Base/inicio-html.php";
 ?>
 <main class="container">
     <form class="container__formulario"
-        method="post">
+        method="post"
+        enctype="multipart/form-data"
+        >
         <h2 class="formulario__titulo">Envie um vídeo!</h3>
             <div class="formulario__campo">
                 <label class="campo__etiqueta" for="url">Link embed</label>
@@ -27,6 +29,14 @@ require_once __DIR__ . "/Base/inicio-html.php";
                     required
                     placeholder="Neste campo, dê o nome do vídeo"
                     id='title' />
+            </div>
+            <div class="formulario__campo">
+                <label class="campo__etiqueta" for="image">Imagem do vídeo</label>
+                <input name="image"
+                    type="file"
+                    accept="image/*"
+                    class="campo__escrita"
+                    id='image' />
             </div>
             <input class="formulario__botao" type="submit" value="Enviar" />
     </form>
