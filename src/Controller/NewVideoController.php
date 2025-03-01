@@ -3,24 +3,32 @@
 namespace alura\mvc\Controller;
 
 use alura\mvc\Controller\Interfaces\ControllerInterface;
+use alura\mvc\Helper\FlashMessageTrait;
 use alura\mvc\Models\Video;
 use alura\mvc\Repositories\VideoRepository;
 use finfo;
 
+session_start();
+
 class NewVideoController implements ControllerInterface
 {
+    use FlashMessageTrait;
+
     public function __construct(private VideoRepository $videoRepository) {}
 
     public function requestProcess(array $data = ["url", "title"]): void
     {
         $url = filter_input(INPUT_POST, "url", FILTER_VALIDATE_URL);
-        $title = filter_input(INPUT_POST, "title");
+        if ($url === false) {
+            $this->addErrorMessage("URL inválida");
+            header("Location: /novo-video");
+            exit();
+        }
 
-        $data = [$url, $title];
-        if (count(array_intersect($data, [false, true])) > 0) {
-            session_start();
-            $_SESSION['message'] = "Dados incorretos ou inexistentes";
-            header("Location: /?success=0");
+        $title = filter_input(INPUT_POST, "title");
+        if ($title === false) {
+            $this->addErrorMessage("Titulo não informado");
+            header("Location: /novo-video");
             exit();
         }
 
@@ -45,11 +53,11 @@ class NewVideoController implements ControllerInterface
         $result = $this->videoRepository->add($video);
 
         if (!$result) {
-            $_SESSION['message'] = "Falha ao adicionar vídeo.";
-            header("Location: /?success=0");
+            $this->addErrorMessage("Falha ao adicionar vídeo.");
+            header("Location: /novo-video");
         } else {
-            $_SESSION['message'] = "Vídeo adicionado com sucesso.";
-            header("Location: /?success=1");
+            $this->addSuccessMessage("Vídeo adicionado com sucesso.");
+            header("Location: /");
         } 
     }
 }

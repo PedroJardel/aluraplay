@@ -1,13 +1,14 @@
 <?php
-
 namespace alura\mvc\Controller;
 
-use alura\mvc\Controller\Interfaces\ControllerInterface;
+use alura\mvc\Helper\HtmlRenderTrait;
 use alura\mvc\Models\Video;
 use alura\mvc\Repositories\VideoRepository;
 
-class VideoFormController extends ControllerWithHtml
+class VideoFormController
 {
+    use HtmlRenderTrait;
+    
     public function __construct(private VideoRepository $videoRepository) {}
 
     public function requestProcess()
@@ -22,7 +23,7 @@ class VideoFormController extends ControllerWithHtml
         if (!in_array($id, [false, null], true)) {
             $video = $this->videoRepository->getById($id);
         }
-        $this->renderTemplate(
+        echo $this->renderTemplate(
             'video-form', 
             ['video' => $video]
         );

@@ -1,11 +1,11 @@
 <?php
-
 namespace alura\mvc\Controller;
 
-use alura\mvc\Controller\Interfaces\ControllerInterface;
+use alura\mvc\Helper\HtmlRenderTrait;
 
-class LoginFormController extends ControllerWithHtml
+class LoginFormController
 {
+    use HtmlRenderTrait;
     public function requestProcess()
     {
         if (array_key_exists("logado", $_SESSION) && $_SESSION['logado'] === true) {
@@ -19,6 +19,6 @@ class LoginFormController extends ControllerWithHtml
             unset($_SESSION['message']);
         }
 
-        $this->renderTemplate('login-form');
+        echo $this->renderTemplate('login-form');
     }
 }
