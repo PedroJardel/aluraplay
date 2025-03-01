@@ -2,50 +2,74 @@
 namespace alura\mvc\Controller;
 
 use alura\mvc\Controller\Interfaces\ControllerInterface;
+use alura\mvc\Helper\FlashMessageTrait;
 use alura\mvc\Models\Video;
 use alura\mvc\Repositories\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class EditVideoController implements ControllerInterface
 {
+    use FlashMessageTrait;
+
     public function __construct(private VideoRepository $videoRepository){}    
 
-    public function requestProcess()
+    public function requestProcess(ServerRequestInterface $request): ResponseInterface
     {
-        $url = filter_input(INPUT_POST, "url", FILTER_VALIDATE_URL);
-        $title = filter_input(INPUT_POST, "title");
-        $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+        $body = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        $url = filter_var($body['url'],FILTER_VALIDATE_URL);
+        $title = filter_var($body['title']);
+        $id = filter_var($queryParams['id'], FILTER_VALIDATE_INT);
         
         $data = [$id, $url, $title ];
 
         if (count(array_intersect($data, [false, true])) > 0) {
-            $_SESSION['message'] = "Dados incorretos ou inexistentes";
-            header("Location: /?success=0");
-            exit();
+            $this->addErrorMessage("Dados incorretos ou inexistentes");
+            return new Response (302,
+            [
+                'Location' => '/'
+            ]);
         }
         
         $video = new Video (
             $url,
             $title
         );
+        $files = $request->getUploadedFiles();
+        /**
+         * @var \Psr\Http\Message\UploadedFileInterface $uploadedImage
+         */
+        $uploadedImage = $files['image'];
 
-        if($_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $fileName = uniqid('upload') . $_FILES['image']['name'];
-            move_uploaded_file(
-                $_FILES['image']['tmp_name'],
-                __DIR__ . "/../../public/img/uploads/" . $fileName
-            );
-            $video->setFilePath($fileName);
+        if($uploadedImage->getError() === UPLOAD_ERR_OK) {
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $tmpFile = $uploadedImage->getStream()->getMetadata('uri');
+            $mimeType = $finfo->file($tmpFile);
+
+            if(str_starts_with($mimeType, 'image/')) {
+                $fileName = uniqid('upload') . pathinfo($uploadedImage->getClientFilename(), PATHINFO_BASENAME);
+                $uploadedImage->moveTo(__DIR__ . "/../../public/img/uploads/" . $fileName);
+                $video->setFilePath($fileName);
+            }
         }
         $video->setId($id);
 
         $result = $this->videoRepository->update($video);
         
         if (!$result) {
-            $_SESSION['message'] = "Falha ao atualizar vídeo.";
-            header("Location: /?success=0");
+            $this->addErrorMessage("Falha ao atualizar vídeo.");
+            return new Response (302,
+            [
+                'Location' => '/'
+            ]);
         } else {
-            $_SESSION['message'] = "Vídeo atualizado com sucesso.";
-            header("Location: /?success=1");
+            $this->addSuccessMessage("Vídeo atualizado com sucesso.");
+            return new Response (302,
+            [
+                'Location' => '/'
+            ]);
         }
 
     }

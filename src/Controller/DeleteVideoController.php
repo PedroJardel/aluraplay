@@ -3,29 +3,47 @@
 namespace alura\mvc\Controller;
 
 use alura\mvc\Controller\Interfaces\ControllerInterface;
+use alura\mvc\Helper\FlashMessageTrait;
 use alura\mvc\Repositories\VideoRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class DeleteVideoController implements ControllerInterface
 {
-    public function __construct(private VideoRepository $videoRepository) {}
+    use FlashMessageTrait;
 
-    public function requestProcess()
+    public function __construct(private VideoRepository $videoRepository) 
     {
-        $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+
+    }
+
+    public function requestProcess(ServerRequestInterface $request): ResponseInterface
+    {
+        $queryParams = $request->getQueryParams();
+        $id = filter_var($queryParams['id'], FILTER_SANITIZE_NUMBER_INT);
 
         if (in_array($id, [false, null], true)) {
-            $_SESSION['message'] = "Identificador incorreto ou inexistente na requisição";
-            header("Location: /?success=0");
-            exit();
+            $this->addErrorMessage("Identificador incorreto ou inexistente na requisição");
+            return new Response(302, 
+        [
+            'Location' => '/'
+        ]);
         }
         $result = $this->videoRepository->remove($id);
 
         if (!$result) {
-            $_SESSION['message'] = "Falha ao excluir vídeo.";
-            header("Location: /?success=0");
+            $this->addErrorMessage("Falha ao excluir vídeo.");
+            return new Response(302, 
+            [
+                'Location' => '/'
+            ]);
         } else {
-            $_SESSION['message'] = "Vídeo excluido com sucesso.";
-            header("Location: /?success=1");
+            $this->addSuccessMessage("Vídeo excluido com sucesso.");
+            return new Response(302, 
+            [
+                'Location' => '/'
+            ]);
         }
     }
 }

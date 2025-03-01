@@ -1,24 +1,24 @@
 <?php
 namespace alura\mvc\Controller;
 
+use alura\mvc\Controller\Interfaces\ControllerInterface;
 use alura\mvc\Helper\HtmlRenderTrait;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-class LoginFormController
+class LoginFormController implements ControllerInterface
 {
     use HtmlRenderTrait;
-    public function requestProcess()
+    public function requestProcess(ServerRequestInterface $request): ResponseInterface
     {
         if (array_key_exists("logado", $_SESSION) && $_SESSION['logado'] === true) {
-            header('Location: /');
-        }
-        if (isset($_SESSION['message'])) {
-            echo "<script>
-            alert('{$_SESSION['message']}');
-             window.location.href = '/login';
-            </script>";
-            unset($_SESSION['message']);
+            return new Response (302, 
+            [
+                'Location' => '/'
+            ]);
         }
 
-        echo $this->renderTemplate('login-form');
+        return new Response (200, body: $this->renderTemplate('login-form'));
     }
 }
