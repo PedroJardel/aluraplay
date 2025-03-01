@@ -4,7 +4,7 @@ namespace alura\mvc\Controller;
 
 use alura\mvc\Controller\Interfaces\ControllerInterface;
 
-class LoginFormController implements ControllerInterface
+class LoginFormController extends ControllerWithHtml
 {
     public function requestProcess()
     {
@@ -19,6 +19,6 @@ class LoginFormController implements ControllerInterface
             unset($_SESSION['message']);
         }
 
-        require __DIR__ . "/../../Views/login-form.php";
+        $this->renderTemplate('login-form');
     }
 }

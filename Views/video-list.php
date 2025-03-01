@@ -3,10 +3,10 @@
 use alura\mvc\Models\Video;
 
 require_once __DIR__ . "/Base/inicio-html.php";
-/** @var Video[] $videosList*/
+/** @var Video[] $videoList*/
 ?>
 <ul class="videos__container" alt="videos alura">
-    <?php foreach ($videosList as $video): ?>
+    <?php foreach ($videoList as $video): ?>
         <li class="videos__item">
             <?php if($video->filePath() !== null): ?>
                 <img src="/img/uploads/<?= $video->filePath() ?>" alt="" style=" width:100%; height:100%; object-fit:cover;"/>
