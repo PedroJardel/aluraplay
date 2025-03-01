@@ -24,7 +24,14 @@ class LoginController implements ControllerInterface
 
         $userData = $statement->fetch();
 
-        $correctPassword = password_verify($password, $userData["password"] ?? '');
+        $correctPassword = password_verify($password, $userData['password'] ?? '');
+        
+        if (password_needs_rehash($userData['password'], PASSWORD_ARGON2ID)) {
+            $statement = $this->connection->prepare("UPDATE users SET password = :password WHERE id = :id");
+            $statement->bindValue("password", password_hash($password, PASSWORD_ARGON2ID), PDO::PARAM_STR);
+            $statement->bindValue("id", $userData['id']);
+            $statement->execute();
+        }
 
         if(!$correctPassword) {
             $_SESSION["message"] = "Dados incorretos";
