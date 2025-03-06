@@ -2,23 +2,22 @@
 
 namespace alura\mvc\Controller;
 
-use alura\mvc\Controller\Interfaces\ControllerInterface;
 use alura\mvc\Helper\FlashMessageTrait;
-use alura\mvc\Infra\Database;
 use Nyholm\Psr7\Response;
 use PDO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class LoginController implements ControllerInterface
+class LoginController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     private PDO $connection;
-    public function __construct()
+    public function __construct(PDO $connection)
     {
-        $this->connection = Database::getConnection();
+        $this->connection = $connection;
     }
-    public function requestProcess(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();
         $email = filter_var($body['email'], FILTER_VALIDATE_EMAIL);

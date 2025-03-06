@@ -1,21 +1,21 @@
 <?php
 namespace alura\mvc\Controller;
 
-use alura\mvc\Controller\Interfaces\ControllerInterface;
 use alura\mvc\Helper\FlashMessageTrait;
 use alura\mvc\Models\Video;
 use alura\mvc\Repositories\VideoRepository;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class EditVideoController implements ControllerInterface
+class EditVideoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
     public function __construct(private VideoRepository $videoRepository){}    
 
-    public function requestProcess(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();
         $queryParams = $request->getQueryParams();

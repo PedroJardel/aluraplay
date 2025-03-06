@@ -2,7 +2,6 @@
 
 namespace alura\mvc\Controller;
 
-use alura\mvc\Controller\Interfaces\ControllerInterface;
 use alura\mvc\Helper\FlashMessageTrait;
 use alura\mvc\Models\Video;
 use alura\mvc\Repositories\VideoRepository;
@@ -10,16 +9,17 @@ use finfo;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 session_start();
 
-class NewVideoController implements ControllerInterface
+class NewVideoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
     public function __construct(private VideoRepository $videoRepository) {}
 
-    public function requestProcess(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();
         $url = filter_var($body['url'], FILTER_VALIDATE_URL);

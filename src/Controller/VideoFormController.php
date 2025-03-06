@@ -9,15 +9,16 @@ use alura\mvc\Repositories\VideoRepository;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class VideoFormController
+class VideoFormController implements RequestHandlerInterface
 {
     use HtmlRenderTrait;
     use FlashMessageTrait;
 
     public function __construct(private VideoRepository $videoRepository) {}
 
-    public function requestProcess(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
 

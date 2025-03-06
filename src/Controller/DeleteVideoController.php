@@ -2,14 +2,14 @@
 
 namespace alura\mvc\Controller;
 
-use alura\mvc\Controller\Interfaces\ControllerInterface;
 use alura\mvc\Helper\FlashMessageTrait;
 use alura\mvc\Repositories\VideoRepository;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class DeleteVideoController implements ControllerInterface
+class DeleteVideoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
@@ -18,7 +18,7 @@ class DeleteVideoController implements ControllerInterface
 
     }
 
-    public function requestProcess(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
         $id = filter_var($queryParams['id'], FILTER_SANITIZE_NUMBER_INT);
