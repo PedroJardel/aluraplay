@@ -1,8 +1,8 @@
 <?php
+$this->layout('layout');
 
 use alura\mvc\Models\Video;
 
-require_once __DIR__ . "/Base/inicio-html.php";
 /** @var Video|null $video */
 ?>
 <main class="container">
@@ -41,4 +41,3 @@ require_once __DIR__ . "/Base/inicio-html.php";
             <input class="formulario__botao" type="submit" value="Enviar" />
     </form>
 </main>
-<?php require_once __DIR__ . "/Base/fim-html.php";

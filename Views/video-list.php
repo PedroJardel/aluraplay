@@ -1,8 +1,8 @@
 <?php
+$this->layout('layout');
 
 use alura\mvc\Models\Video;
 
-require_once __DIR__ . "/Base/inicio-html.php";
 /** @var Video[] $videoList*/
 ?>
 <ul class="videos__container" alt="videos alura">
@@ -32,4 +32,3 @@ require_once __DIR__ . "/Base/inicio-html.php";
         </li>
     <?php endforeach; ?>
 </ul>
-<?php require_once __DIR__ . "/Base/fim-html.php";

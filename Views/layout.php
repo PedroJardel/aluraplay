@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,16 +25,21 @@
         </nav>
     </header>
 
-    <?php if(isset($_SESSION['error_message'])): ?>
-    <h2 class="formulario__titulo error">
-        <?=$_SESSION['error_message']; ?>
-        <?php unset($_SESSION['error_message']); ?>
-    </h2>
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <h2 class="formulario__titulo error">
+            <?= $_SESSION['error_message']; ?>
+            <?php unset($_SESSION['error_message']); ?>
+        </h2>
     <?php endif; ?>
 
-    <?php if(isset($_SESSION['success_message'])): ?>
-    <h2 class="formulario__titulo success">
-        <?=$_SESSION['success_message']; ?>
-        <?php unset($_SESSION['success_message']); ?>
-    </h2>
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <h2 class="formulario__titulo success">
+            <?= $_SESSION['success_message']; ?>
+            <?php unset($_SESSION['success_message']); ?>
+        </h2>
     <?php endif; ?>
+
+    <?php $this->section('content'); ?>
+</body>
+
+</html>

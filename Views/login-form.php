@@ -1,6 +1,4 @@
-<?php
-require_once __DIR__ . "/Base/inicio-html.php"
-?>
+<?php $this->layout('layout'); ?>
 <main class="container">
     <form class="container__formulario" method="post">
         <h2 class="formulario__titulo">Efetue login</h2>
@@ -29,4 +27,3 @@ require_once __DIR__ . "/Base/inicio-html.php"
     </form>
 
 </main>
-<?php require_once __DIR__ . "/Base/fim-html.php";
